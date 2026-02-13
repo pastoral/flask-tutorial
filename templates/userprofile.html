@@ -2,4 +2,11 @@
 {% block title %} User {% endblock%}
 {% block content%}
     <h3> Hello, <strong>{{name}}</strong></h3>
+    <h2> Upload your data</h2>
+    <form action = "{{url_for('file_upload')}}" method = "POST", enctype="multipart/form-data">
+        <input type="file" name = "filename" 
+        accept="text/plain, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required="required">
+        <br><br>
+        <input type="submit" value="Upload File">
+    </form>
 {% endblock%}

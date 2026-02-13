@@ -9,4 +9,12 @@
         <br><br>
         <input type="submit" value="Upload File">
     </form>
+
+    <h2> Convert to CSV and Download your data</h2>
+    <form action = "{{url_for('convert_csv')}}" method = "POST", enctype="multipart/form-data">
+        <input type="file" name = "filename" 
+        accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required="required">
+        <br><br>
+        <input type="submit" value="Convert to CSV & Download">
+    </form>
 {% endblock%}

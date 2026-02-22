@@ -17,4 +17,42 @@
         <br><br>
         <input type="submit" value="Convert to CSV & Download">
     </form>
+
+    <h1>Json example</h1>
+    <h2>Enter Your Name</h2>
+
+    <form id="nameForm">
+        <input type="text" id="first_name" placeholder="First Name" required>
+        <input type="text" id="last_name" placeholder="Last Name" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3 id="result"></h3>
+
+    <script>
+        document.getElementById("nameForm").addEventListener('submit', function(e){
+            e.preventDefault(); // Prevent page reload
+
+             const firstName = document.getElementById("first_name").value;
+             const lastName = document.getElementById("last_name").value;
+
+             fetch("/submit",{
+                 // "submit" is the route name
+                  method: "POST",  
+                headers: {
+                "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    first_name : firstName,
+                    last_name : lastName
+
+                })
+             })
+             .then(response =>response.json())
+             .then(data =>{
+                document.getElementById("result").innerText = data.response_message //response_message came from app.py's route 
+             })
+        })
+    </script>
+
 {% endblock%}

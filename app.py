@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, Response 
+from flask import Flask, render_template, request, redirect, url_for, Response, jsonify
 import pandas as pd
 
 app = Flask(__name__, template_folder = 'templates')
@@ -52,6 +52,16 @@ def convert_csv():
     )
     return response
     
+
+@app.route("/submit", methods=["POST"])
+def submit():
+    data = request.get_json()  # Get JSON data from frontend
+    first_name = data.get("first_name")
+    last_name = data.get("last_name")
+
+    message = f'Hello {first_name} {last_name},  Welocome to Jason'
+    return jsonify({"response_message": message})
+
 
 
 if __name__ == "__main__":

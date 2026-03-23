@@ -1,7 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, Response, jsonify
-import pandas as pd
+from flask import Flask, render_template, request, redirect, url_for, Response, jsonify, session
+
 
 app = Flask(__name__, template_folder = 'templates', static_folder='static', static_url_path = '/')
+
+# REQUIRED for session
+app.secret_key = "MYSECRETKEY"
 
 @app.route("/")
 def index():
@@ -13,16 +16,28 @@ def userlogin():
     if request.method=="GET":
         return render_template("login.html")
     elif request.method=="POST":
-        return redirect(url_for("dashboard", username=request.form["username"]))
+        #return redirect(url_for("dashboard", username=request.form["username"])) ##
+        username = request.form["username"]
+        # Save user in session
+        session["user"] = username
+        return redirect(url_for("dashboard"))
 
 @app.route('/dashboard')
 def dashboard():
-    name = request.args.get("username")
-    return render_template('dashboard.html', username=name)
+    #name = request.args.get("username") ##
+    #return render_template('dashboard.html', username=name) ##
+    ### GET the User data from the Session ###
+    if "user" in session:
+        name = session["user"]
+        ## Below two lines ensure accessing the Dashboard only if the user is logged in ##
+        return render_template('dashboard.html', username=name) 
+    return redirect(url_for("userlogin"))
 
 
 @app.route("/logout")
 def logout():
+    #Logout removes session: ##
+    session.pop("user", None)
     return redirect(url_for("userlogin"))
 
 if __name__ == "__main__":
